@@ -1,0 +1,33 @@
+# simple_config_file:
+    plugin: jenkins
+
+    # Jenkins server url configuration
+    jenkins_host: http://127.0.0.1:8080/
+    # Jenkins user that must have permissions to see the nodes connected to jenkins
+    #   Omit user and password if computers can be seen by anonymous in your jenkins server.
+    jenkins_user: user
+    # The password for this user. Remember that ansible-vault is supported here.
+    #   It's not a good idea to put plain text here.
+    # If you omit this field, the password will be gotten via prompt
+    jenkins_pass: user
+
+    # Cache configuration. 
+    # Sample for json file chache plugin configuration, just configure the chache plugin
+    #   that suites better for you
+    cache_connection: /home/user/cache 
+    cache_plugin: jsonfile
+    cache: False
+
+    # Create new hostvars using existing hostvars
+    compose:
+       ansible_connection: ('indows' in launcher_plugin)|ternary('winrm', 'ssh')
+
+    # Create groups depending on jinja2 filters
+    groups:
+        temporary_offline: (temporary_offline)
+
+    # Create groups depending on variable values
+    keyed_groups:
+        - prefix: oss
+          key: launcher_plugin.split('@')[0]
+     
