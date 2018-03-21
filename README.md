@@ -161,6 +161,8 @@ This is how a jenkins inventory file using jsoncache plugin would look like:
      
 
 ```
+You can find a sample [here](https://github.com/Ikuze/jenkins-dynamic-inventory/blob/master/example_inventory.jenkins.yml)
+
 
 ## Hostvars:
 
