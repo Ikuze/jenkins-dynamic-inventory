@@ -128,12 +128,12 @@ This is how a jenkins inventory file using jsoncache plugin would look like:
     
     # Jenkins user that must have permissions to see the nodes connected to jenkins
     #   Omit user and password if computers can be seen by anonymous in your jenkins server.
-    user: user
+    jenkins_user: user
     
     # The password for this user. Remember that ansible-vault is supported here.
     #   It's not a good idea to put plain text here.
     # If you omit this field, the password will be gotten via prompt
-    pass: secretpassword
+    jenkins_pass: secretpassword
 
 
     # Cache configuration. 
