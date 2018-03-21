@@ -5,6 +5,9 @@ Dinamic inventory to run ansible plays in jenkins slaves
 
 We can't always work with those fancy cloud environments in our CI/CD with jenkins and be able to create and destroy full environments at will. Sometimes we have to deal with baremetal machines or just persistent nodes that we need to configure and reconfigure every now and then. Hence, sometimes we need to run maintenance scripts on those nodes, and that's the reason why I developed this plugin. Everybody has thought "we can just create a job and run it in every node", I wanted something different.
 
+## Ansible Version
+
+This inventory plugin needs **ansible >= 2.5**
 
 ## How to:
 
@@ -12,7 +15,7 @@ We can't always work with those fancy cloud environments in our CI/CD with jenki
 ***
 
 
-Copy the jenkins.py file in your ansible's plugins directory.
+Copy the jenkins.py file in your ansible's inventory plugins directory.
 
 Enable the jenkins plugin in your ansible's configuration file:
 
@@ -25,7 +28,7 @@ Enable the jenkins plugin in your ansible's configuration file:
 > **enable_plugins = jenkins**
 
 
-Instead of changing your ansible configuration and copying the plugin in your ansible inventory plugin directory, you can run your command like that
+Instead of changing your ansible configuration and copying the plugin in your ansible's inventory plugin directory, you can run your command like that:
 
 
 ``` 
@@ -106,7 +109,8 @@ Once you have enabled the use of cache, you can use whatever cache plugin you wa
 ###### strict(bool)
 
 	If true make invalid entries a fatal error, otherwise skip and continue
-	Since it is possible to use facts in the expressions they might not always be available and we ignore those errors by default.
+	Since it is possible to use facts in the expressions they might not always be available 
+	and we ignore those errors by default.
 
 
 You can find detailed documentation about Constructed params here: [constructed doc](http://docs.ansible.com/ansible/devel/plugins/inventory/constructed.html)
@@ -163,16 +167,21 @@ This is how a jenkins inventory file using jsoncache plugin would look like:
 The plugin will include several hostvars.
 
 ###### launcher_plugin
-	The plugin used by jenkins to launch scripts in this slave. I.e: "windows-slaves@1.3.1", "command-launcher@1.2" or "ssh-slaves@1.26", for instance.
+	The plugin used by jenkins to launch scripts in this slave. I.e: "windows-slaves@1.3.1", 
+	"command-launcher@1.2" or "ssh-slaves@1.26", for instance.
     
     
 
 ###### ansible_host
-	When we can get this information from the launcher plugin, we will set this hostvar. It will not be set if we cant find its value inspecting the launcher (in command-launcher for instance we can't get its value)
+	When we can get this information from the launcher plugin, we will set this hostvar. 
+	It will not be set if we cant find its value inspecting the launcher 
+	(in command-launcher for instance we can't get its value)
     
-###### ansible_host  
+###### ansible_port  
 
-	If we can get the port from the launcher, we will set it. If not, we won't. (Basically we will only set it when using ssh-slaves launcher). If you need to set this variable in a windows slave, you will have to do it via 'compose'.
+	If we can get the port from the launcher, we will set it. If not, we won't.
+	(Basically we will only set it when using ssh-slaves launcher).
+	If you need to set this variable in a windows slave, you will have to do it via 'compose'.
     
 ###### temporary_offline
 
@@ -180,7 +189,8 @@ The plugin will include several hostvars.
     
 ###### jenkins defined node properties
     
-	The plugin will read the node properties defined in jenkins and will set them as hostvars in this node, so that you can access them from your ansible whenever you need them.
+	The plugin will read the node properties defined in jenkins and will set them as hostvars in this node,
+	so that you can access them from your ansible whenever you need them.
 
 	You need to be aware that there are variables that will be ignored. Those variables are:  
     - 'launcher_plugin'
@@ -189,7 +199,8 @@ The plugin will include several hostvars.
     - 'ansible_port'
     - 'temporary_offline'
     
-	If you define any node property with those names, it will be ignored, and the actual value will NOT be overwritten.
+	If you define any node property with those names, it will be ignored, and the actual
+	value will NOT be overwritten.
     
     
     
