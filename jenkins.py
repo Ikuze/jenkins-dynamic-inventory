@@ -43,6 +43,12 @@ from ansible.module_utils.urls import open_url
 from ansible.module_utils.six.moves.urllib.parse import urlencode
 from ansible.module_utils.six.moves.urllib.request import Request, HTTPRedirectHandler, build_opener
 
+try:
+    from __main__ import display
+except ImportError:
+    from ansible.utils.display import Display
+    display = Display()
+
 from lxml import objectify
 import getpass
 
@@ -103,6 +109,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             except KeyError:
                 # if cache expires or cache file doesn't exist
                 cache_needs_update = True
+
+        display.vvv('Cache {0}. Needs update {1}. Cache key {2}'.format(cache,
+                                                                        cache_needs_update,
+                                                                        cache_key))
 
         if not cache or cache_needs_update:
             data = self.get_data_from_jenkins()
