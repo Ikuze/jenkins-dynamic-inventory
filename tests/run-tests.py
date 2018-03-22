@@ -70,13 +70,12 @@ class JenkinsInventory_Unit_NoCache_Tests(TestCase):
         # remove the _meta group, previously used for cache
         actual_groups.remove('_meta')
         self.assertItemsEqual(actual_groups,
-                             expected_groups)
+                              expected_groups)
 
         for group_name, nodes in self.test_config['expect']['groups'].iteritems():
             one_group = jenkins_inventory.inventory.groups[group_name]
             group_nodes = [x.name for x in one_group.get_hosts()]
             self.assertItemsEqual(group_nodes, nodes)
-
 
 
 def make_test_function(description, test_filename):
