@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<slave>
+  <name>node2</name>
+  <description></description>
+  <remoteFS>/home/user/workspace</remoteFS>
+  <numExecutors>1</numExecutors>
+  <mode>NORMAL</mode>
+  <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
+  <launcher class="hudson.os.windows.ManagedWindowsServiceLauncher" plugin="windows-slaves@1.3.1">
+    <userName>IEUser</userName>
+    <password>{AQAAABAAAAAQSexrPf4v/GNpkTiT6SCNtgXrs+Au9XOkesolIJev/cc=}</password>
+    <account class="hudson.os.windows.ManagedWindowsServiceAccount$AnotherUser">
+      <userName>IEUser</userName>
+      <password>{AQAAABAAAAAQest32k3R7XN4i1vR5YNyryr+4CmZfnwHscSn55GCX4Q=}</password>
+    </account>
+    <host>192.168.1.13</host>
+  </launcher>
+  <label>my_label_two</label>
+  <nodeProperties>
+    <hudson.slaves.EnvironmentVariablesNodeProperty>
+      <envVars serialization="custom">
+        <unserializable-parents/>
+        <tree-map>
+          <default>
+            <comparator class="hudson.util.CaseInsensitiveComparator"/>
+          </default>
+          <int>1</int>
+          <string>pass</string>
+          <string>Passw0rd!</string>
+        </tree-map>
+      </envVars>
+    </hudson.slaves.EnvironmentVariablesNodeProperty>
+  </nodeProperties>
+</slave>

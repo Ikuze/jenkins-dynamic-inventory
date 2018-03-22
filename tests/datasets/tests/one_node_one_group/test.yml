@@ -1,0 +1,17 @@
+jenkins_inventory_data: ../../inventory_files/jenkins_inventory.jenkins.yml
+
+computers_json: all_computers.json
+
+nodes_xml:
+    - ../../nodes/node1.xml
+
+expect:
+    all_groups: ['all', 'ungrouped',  'my_label_one']
+    groups:
+        all:
+            - node1
+
+        ungrouped: []
+
+        my_label_one:
+            - node1

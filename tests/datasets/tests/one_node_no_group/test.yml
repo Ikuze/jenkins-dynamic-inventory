@@ -1,0 +1,15 @@
+jenkins_inventory_data: ../../inventory_files/jenkins_inventory.jenkins.yml
+
+computers_json: all_computers.json
+
+nodes_xml:
+    - ../../nodes/node4.xml
+
+expect:
+    all_groups: ['all', 'ungrouped']
+    groups:
+        all:
+            - node4
+
+        ungrouped:
+            - node4

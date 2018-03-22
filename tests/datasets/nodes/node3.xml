@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<slave>
+  <name>node3</name>
+  <description></description>
+  <remoteFS>/home/user/workspace</remoteFS>
+  <numExecutors>1</numExecutors>
+  <mode>NORMAL</mode>
+  <retentionStrategy class="hudson.slaves.RetentionStrategy$Always"/>
+  <launcher class="hudson.slaves.CommandLauncher" plugin="command-launcher@1.2">
+    <agentCommand>mycommand</agentCommand>
+  </launcher>
+  <label>my_label_one</label>
+  <nodeProperties>
+    <hudson.slaves.EnvironmentVariablesNodeProperty>
+      <envVars serialization="custom">
+        <unserializable-parents/>
+        <tree-map>
+          <default>
+            <comparator class="hudson.util.CaseInsensitiveComparator"/>
+          </default>
+          <int>2</int>
+          <string>propname_1</string>
+          <string>propvalue_1</string>
+          <string>propname_2</string>
+          <string>propvalue_2</string>
+        </tree-map>
+      </envVars>
+    </hudson.slaves.EnvironmentVariablesNodeProperty>
+  </nodeProperties>
+</slave>
