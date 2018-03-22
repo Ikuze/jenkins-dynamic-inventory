@@ -1,5 +1,5 @@
 # jenkins-dynamic-inventory
-Dinamic inventory to run ansible plays in jenkins slaves
+Dynamic inventory to run ansible plays in jenkins slaves
 
 ## Jenkins Inventory
 
@@ -70,7 +70,7 @@ Parameters regarding our jenkins instance.
     
 ###### jenkins_user (str)
 
-	Username that will be used to query the nodes connected to our jenkins.
+	The username that will be used to query the nodes connected to our jenkins.
     You can omit this user if your computers can be seen by anonymous.
 
 ###### jenkins_pass (str)
@@ -89,7 +89,7 @@ Parameters regarding our cache configuration. We can use any of the cache plugin
 
 	Default: False
 
-Once you have enabled the use of cache, you can use whatever cache plugin you want to use. Each plugin will use their own parameters, you can find detailed documentation about cache plugins and their parameters here: [cache doc](http://docs.ansible.com/ansible/devel/plugins/cache.html)
+Once you have enabled the use of the cache, you can use whatever cache plugin you want to use. Each plugin will use their own parameters, you can find detailed documentation about cache plugins and their parameters here: [cache doc](http://docs.ansible.com/ansible/devel/plugins/cache.html)
 
 
 ##### Constructed
@@ -100,15 +100,15 @@ Once you have enabled the use of cache, you can use whatever cache plugin you wa
 
 ###### groups (dict)
 
-	add hosts to group based on Jinja2 conditionals
+	add hosts to a group based on Jinja2 conditionals
 
 ###### keyed_groups (list)
 
-	add hosts to group based on the values of a variable
+	add hosts to a group based on the values of a variable
 
 ###### strict(bool)
 
-	If true make invalid entries a fatal error, otherwise skip and continue
+	If true makes invalid entries a fatal error, otherwise skip and continue
 	Since it is possible to use facts in the expressions they might not always be available 
 	and we ignore those errors by default.
 
@@ -182,7 +182,7 @@ The plugin will include several hostvars.
 ###### ansible_port  
 
 	If we can get the port from the launcher, we will set it. If not, we won't.
-	(Basically we will only set it when using ssh-slaves launcher).
+	(Basically, we will only set it when using ssh-slaves launcher).
 	If you need to set this variable in a windows slave, you will have to do it via 'compose'.
     
 ###### temporary_offline
@@ -212,7 +212,7 @@ By default this plugin will create as many groups as tags are defined in jenkins
 
 There are 2 mandatory groups in ansible, "all" and "ungrouped". Hence, please, we should NOT use tags with those names in jenkins if we want to use this plugin. It is a limitation that we just can't avoid, we should NEVER use those names as tags in our jenkins (if we are using this plugin), I repeat.
 
-Apart from the tags, we can create any extra groups using the 'costructed' interface. For instance, as we can see in our jenkins-inventory-file example, we can create those groups:
+Apart from the tags, we can create any extra groups using the 'constructed' interface. For instance, as we can see in our jenkins-inventory-file example, we can create those groups:
 
 	# Group by launcher (windows/linux/command....)
     keyed_groups:
@@ -257,7 +257,7 @@ I repeat what I have said about groups names before:
  
 There is another limitation:
 
->When constructing variables or groups in jenkins inventory file, we only can use the variables defined by this plugin. We cannot use hostvars like 'ansible_version', for instance, to construct new ones defined in the jenkins inventory file. Hence, we should only use the variables defined in the "hostvars" section of this document (including those ones defined via node property in jenkins) to construct new ones (or new groups) via 'constructed'.
+>When constructing variables or groups in the jenkins inventory file, we only can use the variables defined by this plugin. We cannot use hostvars like 'ansible_version', for instance, to construct new ones defined in the jenkins inventory file. Hence, we should only use the variables defined in the "hostvars" section of this document (including those ones defined via node property in jenkins) to construct new ones (or new groups) via 'constructed'.
 
 
 # Bugs:
@@ -335,7 +335,7 @@ Look at the following inventory.
 
 As you can see the node4 is marked as 'ungrouped' but, nevertheless, it's included in "oss_command_launcher" group. It happens because this group ("oss_command_launcher") is 'constructed' and there are ansible versions with a but that doesn't remove the nodes from 'ungrouped' group when they are included in any group via 'constructed'.
 
-Just verify that your ansible version doesn't has this bug if this is important for you. It is reported here: [ungrouped bug](https://github.com/ansible/ansible/issues/32146)
+Just verify that your ansible version doesn't have this bug if this is important for you. It is reported here: [ungrouped bug](https://github.com/ansible/ansible/issues/32146)
 
 
 
