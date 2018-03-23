@@ -1,0 +1,121 @@
+{
+    "_class": "hudson.model.ComputerSet", 
+    "busyExecutors": 0, 
+    "computer": [
+        {
+            "_class": "hudson.model.Hudson$MasterComputer", 
+            "actions": [], 
+            "description": "the master Jenkins node", 
+            "displayName": "master", 
+            "executors": [
+                {}, 
+                {}
+            ], 
+            "icon": "computer.png", 
+            "iconClassName": "icon-computer", 
+            "idle": true, 
+            "jnlpAgent": false, 
+            "launchSupported": true, 
+            "loadStatistics": {
+                "_class": "hudson.model.Label$1"
+            }, 
+            "manualLaunchAllowed": true, 
+            "monitorData": {
+                "hudson.node_monitors.ArchitectureMonitor": "Linux (amd64)", 
+                "hudson.node_monitors.ClockMonitor": {
+                    "_class": "hudson.util.ClockDifference", 
+                    "diff": 0
+                }, 
+                "hudson.node_monitors.DiskSpaceMonitor": {
+                    "_class": "hudson.node_monitors.DiskSpaceMonitorDescriptor$DiskSpace", 
+                    "path": "/home/user/.jenkins", 
+                    "size": 25301544960, 
+                    "timestamp": 1521665983114
+                }, 
+                "hudson.node_monitors.ResponseTimeMonitor": {
+                    "_class": "hudson.node_monitors.ResponseTimeMonitor$Data", 
+                    "average": 0, 
+                    "timestamp": 1521665983119
+                }, 
+                "hudson.node_monitors.SwapSpaceMonitor": {
+                    "_class": "hudson.node_monitors.SwapSpaceMonitor$MemoryUsage2", 
+                    "availablePhysicalMemory": 239108096, 
+                    "availableSwapSpace": 3297755136, 
+                    "totalPhysicalMemory": 3225124864, 
+                    "totalSwapSpace": 3298816000
+                }, 
+                "hudson.node_monitors.TemporarySpaceMonitor": {
+                    "_class": "hudson.node_monitors.DiskSpaceMonitorDescriptor$DiskSpace", 
+                    "path": "/tmp", 
+                    "size": 25301544960, 
+                    "timestamp": 1521665983352
+                }
+            }, 
+            "numExecutors": 2, 
+            "offline": false, 
+            "offlineCause": null, 
+            "offlineCauseReason": "", 
+            "oneOffExecutors": [], 
+            "temporarilyOffline": false
+        }, 
+        {
+            "_class": "hudson.slaves.SlaveComputer", 
+            "actions": [], 
+            "description": "", 
+            "displayName": "node1", 
+            "executors": [
+                {}
+            ], 
+            "icon": "computer-x.png", 
+            "iconClassName": "icon-computer-x", 
+            "idle": true, 
+            "jnlpAgent": false, 
+            "launchSupported": true, 
+            "loadStatistics": {
+                "_class": "hudson.model.Label$1"
+            }, 
+            "manualLaunchAllowed": true, 
+            "monitorData": {
+                "hudson.node_monitors.ArchitectureMonitor": "Linux (amd64)", 
+                "hudson.node_monitors.ClockMonitor": {
+                    "_class": "hudson.util.ClockDifference", 
+                    "diff": 0
+                }, 
+                "hudson.node_monitors.DiskSpaceMonitor": {
+                    "_class": "hudson.node_monitors.DiskSpaceMonitorDescriptor$DiskSpace", 
+                    "path": "/home/user/workspace", 
+                    "size": 25301544960, 
+                    "timestamp": 1521665983116
+                }, 
+                "hudson.node_monitors.ResponseTimeMonitor": {
+                    "_class": "hudson.node_monitors.ResponseTimeMonitor$Data", 
+                    "average": 3, 
+                    "timestamp": 1521665983120
+                }, 
+                "hudson.node_monitors.SwapSpaceMonitor": {
+                    "_class": "hudson.node_monitors.SwapSpaceMonitor$MemoryUsage2", 
+                    "availablePhysicalMemory": 239239168, 
+                    "availableSwapSpace": 3297755136, 
+                    "totalPhysicalMemory": 3225124864, 
+                    "totalSwapSpace": 3298816000
+                }, 
+                "hudson.node_monitors.TemporarySpaceMonitor": {
+                    "_class": "hudson.node_monitors.DiskSpaceMonitorDescriptor$DiskSpace", 
+                    "path": "/tmp", 
+                    "size": 25301544960, 
+                    "timestamp": 1521665983357
+                }
+            }, 
+            "numExecutors": 1, 
+            "offline": true, 
+            "offlineCause": {
+                "_class": "hudson.slaves.OfflineCause$UserCause"
+            }, 
+            "offlineCauseReason": "", 
+            "oneOffExecutors": [], 
+            "temporarilyOffline": true
+        }
+    ], 
+    "displayName": "Nodes", 
+    "totalExecutors": 2
+}

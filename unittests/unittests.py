@@ -2,28 +2,28 @@ from jenkins import InventoryModule
 
 import unittest
 from unittest import TestCase
-import mock
-from mock import patch, MagicMock, mock_open, PropertyMock
+from mock import patch, MagicMock
 
 from ansible.plugins.inventory import BaseInventoryPlugin
-from ansible.parsing.dataloader import DataLoader
 
 
 CACHE_TEST_KEY = 'cache_key_for_testing_purposes'
-DATA_NO_CACHE = {u'compose': 
-                    {u'ansible_connection': u"('indows' in launcher_plugin)|ternary('winrm', 'ssh')"}, 
-                 u'jenkins_user': u'user', 
-                 u'jenkins_pass': u'user', 
-                 u'plugin': u'jenkins', 
-                 u'cache': False, 
-                 u'jenkins_host': u'http://127.0.0.1:8081/', 
-                 u'cache_plugin': u'jsonfile', 
-                 u'strict': False, 
-                 u'keyed_groups': [{u'prefix': u'oss', u'key': u"launcher_plugin.split('@')[0]"}], 
-                 u'groups': {u'temporary_offline': u'(temporary_offline)'},
-                 u'cache_timeout': 3600, u'cache_connection': 
-                 u'/home/user/playbooks/cache'
-                }
+DATA_NO_CACHE = {
+    u'compose': {
+        u'ansible_connection': u"('indows' in launcher_plugin)|ternary('winrm', 'ssh')"
+    },
+    u'jenkins_user': u'user',
+    u'jenkins_pass': u'user',
+    u'plugin': u'jenkins',
+    u'cache': False,
+    u'jenkins_host': u'http://127.0.0.1:8081/',
+    u'cache_plugin': u'jsonfile',
+    u'strict': False,
+    u'keyed_groups': [{u'prefix': u'oss', u'key': u"launcher_plugin.split('@')[0]"}],
+    u'groups': {u'temporary_offline': u'(temporary_offline)'},
+    u'cache_timeout': 3600, u'cache_connection':
+    u'/home/user/playbooks/cache'
+}
 
 
 # TODO:  Decent UT?

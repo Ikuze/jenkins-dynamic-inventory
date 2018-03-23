@@ -1,4 +1,4 @@
-jenkins_inventory_data: ../../inventory_files/jenkins_inventory.jenkins.yml
+jenkins_inventory_data: ../../inventory_files/jenkins_inventory_compose.jenkins.yml
 
 computers_json: all_computers.json
 
@@ -12,5 +12,11 @@ expect:
 
         ungrouped: []
 
+        temporary_offline:
+            - node1
+
         my_label_one:
+            - node1
+
+        oss_ssh_slaves:
             - node1

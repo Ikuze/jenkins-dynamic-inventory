@@ -76,9 +76,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                 result.orig_status = code
                 result.orig_headers = headers
                 return result
-
         request = Request(jenkins_url, data)
-        opener = build_opener(SmartRedirectHandler())
+        opener = self.build_opener(SmartRedirectHandler())
         res = opener.open(request)
         self._save_cookie(res.orig_headers)
 
@@ -87,7 +86,6 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         self.cookie = current_cookie.strip('\n\r ')
 
     def parse(self, inventory, loader, path, cache=True):
-
         super(InventoryModule, self).parse(inventory, loader, path)
 
         # Load the configuration data from jenkins inventory file.
@@ -250,17 +248,25 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         jenkins_host = self._get_jenkins_host()
         config_url = '{0}/{1}'.format(jenkins_host, computer_url)
 
-        r = open_url(config_url, use_proxy=False,
-                     validate_certs=False,
-                     method='GET',
-                     timeout=30,
-                     force=False,
-                     headers=self._get_headers())
+        r = self.open_url(config_url, use_proxy=False,
+                          validate_certs=False,
+                          method='GET',
+                          timeout=30,
+                          force=False,
+                          headers=self._get_headers())
 
         xml_config = r.read()
         computer = objectify.fromstring(xml_config)
 
         return computer
+
+    # way easier to mock in the offline test environment
+    def open_url(self, *args, **kwargs):
+        return open_url(*args, **kwargs)
+
+    # way easier to mock in the offline test environment
+    def build_opener(self, *args, **kwargs):
+        return build_opener(*args, **kwargs)
 
     def _get_headers(self):
         headers = {'Cookie': self.cookie}
@@ -272,12 +278,12 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         jenkins_host = self._get_jenkins_host()
         api_url = '{0}/{1}'.format(jenkins_host, computers_api_url)
 
-        r = open_url(api_url, use_proxy=False,
-                     validate_certs=False,
-                     headers=self._get_headers(),
-                     force_basic_auth=True,
-                     force=True,
-                     method='GET')
+        r = self.open_url(api_url, use_proxy=False,
+                          validate_certs=False,
+                          headers=self._get_headers(),
+                          force_basic_auth=True,
+                          force=True,
+                          method='GET')
 
         computers_json = json.loads(r.read().decode('utf-8'))
 

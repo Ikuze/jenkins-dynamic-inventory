@@ -6,7 +6,6 @@ nodes_xml:
     - ../../nodes/node4.xml
 
 expect:
-    all_groups: ['all', 'ungrouped']
     groups:
         all:
             - node4

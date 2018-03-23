@@ -8,15 +8,3 @@ cache_connection: /home/user/cache
 cache_plugin: jsonfile
 cache: False
 
-# Create new hostvars using existing hostvars
-compose:
-   ansible_connection: ('indows' in launcher_plugin)|ternary('winrm', 'ssh')
-
-# Create groups depending on jinja2 filters
-groups:
-    temporary_offline: (temporary_offline)
-
-# Create groups depending on variable values
-keyed_groups:
-    - prefix: oss
-      key: launcher_plugin.split('@')[0]
