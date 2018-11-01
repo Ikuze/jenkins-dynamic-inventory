@@ -66,7 +66,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def _do_login(self):
         login_url = 'j_acegi_security_check'
         jenkins_url = '{0}/{1}'.format(self._get_jenkins_host(), login_url)
-        data = urlencode({'j_username': self._get_jenkins_user(), 'j_password': self._get_jenkins_pass()})
+        data = urlencode({'j_username': self._get_jenkins_user(), 'j_password': self._get_jenkins_pass()}).encode("utf-8")
 
         class SmartRedirectHandler(HTTPRedirectHandler):
             def http_error_302(self, req, fp, code, msg, headers):
@@ -213,8 +213,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         all_props = computer_xml_info.find(all_props_path)
 
         node_properties = {}
-        if num_properties is not None and num_properties > 0:
-            for index in range(0, num_properties):
+        if num_properties is not None:
+            for index in range(0, int(num_properties)):
                 prop_name = str(all_props[index * 2])
                 prop_value = str(all_props[(index * 2) + 1])
 

@@ -257,88 +257,15 @@ I repeat what I have said about groups names before:
  
 There is another limitation:
 
->When constructing variables or groups in the jenkins inventory file, we only can use the variables defined by this plugin. We cannot use hostvars like 'ansible_version', for instance, to construct new ones defined in the jenkins inventory file. Hence, we should only use the variables defined in the "hostvars" section of this document (including those ones defined via node property in jenkins) to construct new ones (or new groups) via 'constructed'.
+>When constructing variables or groups in jenkins inventory file, we only can use the variables defined by this plugin. We cannot use hostvars like 'ansible_version', for instance, to construct new ones defined in the jenkins inventory file. Hence, we should only use the variables defined in the "hostvars" section of this document (including those ones defined via node property in jenkins) to construct new ones (or new groups) via 'constructed'.
 
 
-# Bugs:
+# UNITTESTS:
 
-Look at the following inventory. 
-
-> localhost | SUCCESS => {
-> 
->    "hostvars[inventory_hostname]['groups']": {
->    
->        "_meta": [], 
->        
->        "all": [
->        
->            "node4", 
->            
->            "node1", 
->            
->            "node3", 
->            
->            "node2"
->           
->        ], 
->        
->        "my_label_one": [
->        
->            "node1", 
->            
->            "node3"
->            
->        ], 
->        
->        "my_label_two": [
->        
->            "node2"
->            
->        ], 
->        
->        "oss_command_launcher": [
->        
->            "node3", 
->            
->            "node4"    <------------- THIS
->            
->        ], 
->        
->        "oss_ssh_slaves": [
->        
->            "node1"
->            
->        ], 
->        
->        "oss_windows_slaves": [
->        
->            "node2"
->            
->        ], 
->        
->        "temporary_offline": [
->        
->            "node1"
->            
->        ], 
->        
->        "ungrouped": [
->        
->            "node4"  <------------- THIS
->            
->        ]
->        
->    }
->    
->}
-
-
-As you can see the node4 is marked as 'ungrouped' but, nevertheless, it's included in "oss_command_launcher" group. It happens because this group ("oss_command_launcher") is 'constructed' and there are ansible versions with a but that doesn't remove the nodes from 'ungrouped' group when they are included in any group via 'constructed'.
-
-Just verify that your ansible version doesn't have this bug if this is important for you. It is reported here: [ungrouped bug](https://github.com/ansible/ansible/issues/32146)
-
-
+Unittests only work with python 2.
 
 # TODO:
 
-Currently adding unittests
+It doesn't seem to be a very interesting plugin, since people usually don't need to run ansible in their jenkins slaves because they use jenkins to do so.
+
+Although it is an interesting way of collecting information or setting up the slaves, I will not invest more time in this plugin. Nevertheless I will try to fix the bugs if I find any of them.
