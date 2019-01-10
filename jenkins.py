@@ -154,14 +154,16 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         all_computers = self._get_all_computers()
         for computer in all_computers:
-            if computer == 'master':
+            if computer['_class'] == 'hudson.model.Hudson$MasterComputer':
+                # Skip master node
                 continue
             self.add_computer_2_data(computer, data)
 
         return data
 
     def add_computer_2_data(self, computer, data):
-        computer_info = self._get_computer_info(computer)
+        computer_name = computer['displayName']
+        computer_info = self._get_computer_info(computer_name)
 
         labels = [l.strip() for l in str(computer_info.label).strip().split(' ') if len(l) > 0]
 
@@ -172,10 +174,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         for group in groups:
             group_value = data.get(group, self._get_empty_group())
-            group_value['hosts'].append(computer)
+            group_value['hosts'].append(computer_name)
             data[group] = group_value
             if group == "":
-                raise AnsibleError('Empty group not allowed. Computer: <{0}>'.format(computer))
+                raise AnsibleError('Empty group not allowed. Computer: <{0}>'.format(computer_name))
 
             if group not in data['all']['children']:
                 data['all']['children'].append(group)
@@ -184,7 +186,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         host_vars['launcher_plugin'] = str(computer_info.launcher.attrib['plugin'])
 
-        host_vars['inventory_hostname'] = computer
+        host_vars['inventory_hostname'] = computer_name
         # Host could not be present in a "launched by command" computer
         if hasattr(computer_info.launcher, "host"):
             host_vars['ansible_host'] = str(computer_info.launcher.host)
@@ -196,7 +198,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         host_vars.update(self.get_node_properties(computer_info))
 
-        data['_meta']['hostvars'][computer] = host_vars
+        data['_meta']['hostvars'][computer_name] = host_vars
 
     def get_node_properties(self, computer_xml_info):
         # We don't want anyone to override those properties, it could lead to serious problems if it happens
@@ -281,9 +283,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         computers_json = json.loads(r.read().decode('utf-8'))
 
-        all_computers = []
-        for computer in computers_json['computer']:
-            all_computers.append(computer['displayName'])
+        all_computers = computers_json['computer']
 
         return all_computers
 
