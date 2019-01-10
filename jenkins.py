@@ -196,6 +196,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
         host_vars['temporary_offline'] = hasattr(computer_info, 'temporaryOfflineCause')
 
+        host_vars['idle'] = computer['idle']
+        host_vars['offline'] = computer['offline']
+        host_vars['num_executors'] = computer['numExecutors']
+
         host_vars.update(self.get_node_properties(computer_info))
 
         data['_meta']['hostvars'][computer_name] = host_vars

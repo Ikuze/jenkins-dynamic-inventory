@@ -171,24 +171,38 @@ The plugin will include several hostvars.
 ###### launcher_plugin
 	The plugin used by jenkins to launch scripts in this slave. I.e: "windows-slaves@1.3.1", 
 	"command-launcher@1.2" or "ssh-slaves@1.26", for instance.
-    
-    
 
 ###### ansible_host
 	When we can get this information from the launcher plugin, we will set this hostvar. 
 	It will not be set if we cant find its value inspecting the launcher 
 	(in command-launcher for instance we can't get its value)
-    
+
 ###### ansible_port  
 
 	If we can get the port from the launcher, we will set it. If not, we won't.
 	(Basically, we will only set it when using ssh-slaves launcher).
 	If you need to set this variable in a windows slave, you will have to do it via 'compose'.
-    
+
 ###### temporary_offline
 
 	It will store "True" or "False" depending on if the node is set temporary offline in jenkins.
-    
+
+###### offline
+
+	It will store "True" or "False" depending on if the node is offline in jenkins. A node can be offline
+        and not temporary offline, it usually means that there is a problem with the connection to jenkins.
+
+        If a node is set temporary offline, this value will be "True" too.
+
+###### idle
+
+	It will store "True" if all node executors are idle, or "False" if any of them is working.
+
+###### num_executors
+
+        The number of executors in this node. It doesn't matter if the node is online or offline,
+        this value does not change because of that.
+
 ###### jenkins defined node properties
     
 	The plugin will read the node properties defined in jenkins and will set them as hostvars in this node,
