@@ -190,9 +190,8 @@ The plugin will include several hostvars.
 ###### offline
 
 	It will store "True" or "False" depending on if the node is offline in jenkins. A node can be offline
-        and not temporary offline, it usually means that there is a problem with the connection to jenkins.
-
-        If a node is set temporary offline, this value will be "True" too.
+	and not temporary offline, it usually means that there is a problem with the connection to jenkins.
+	If a node is set temporary offline, this value will be "True" too.
 
 ###### idle
 
@@ -200,8 +199,8 @@ The plugin will include several hostvars.
 
 ###### num_executors
 
-        The number of executors in this node. It doesn't matter if the node is online or offline,
-        this value does not change because of that.
+	The number of executors in this node. It doesn't matter if the node is online or offline,
+	this value does not change because of that.
 
 ###### jenkins defined node properties
     
