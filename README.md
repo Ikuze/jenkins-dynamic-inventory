@@ -9,6 +9,11 @@ We can't always work with those fancy cloud environments in our CI/CD with jenki
 
 This inventory plugin needs **ansible >= 2.5**
 
+## Jenkins permissions
+At least, the user needs:
+- Global Read: in order to read 'computer/api/json'
+- Slave Configure: in order to read 'computer/{SLAVENAME}/config.xml'
+
 ## How to:
 
 ### Enable the plugin.

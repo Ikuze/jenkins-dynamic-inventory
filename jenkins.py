@@ -69,22 +69,36 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         data = urlencode({'j_username': self._get_jenkins_user(), 'j_password': self._get_jenkins_pass()}).encode("utf-8")
 
         class SmartRedirectHandler(HTTPRedirectHandler):
+
+            def extract_cookie(self, setcookie):
+                # Extracts the last cookie.
+                # Example of set-cookie value for python2
+                # ('set-cookie', 'JSESSIONID.30blah=blahblahblah;Path=/;HttpOnly, JSESSIONID.30ablah=blahblah;Path=/;HttpOnly'),
+                return setcookie.split(',')[-1].split(';')[0].strip('\n\r ')
+
             def http_error_302(self, req, fp, code, msg, headers):
+                # Jenkins can send several Set-Cookie values sometimes
+                #  The valid one is the last one
+                for header, value in headers.items():
+                    if header.lower() == 'set-cookie':
+                        cookie = self.extract_cookie(value)
+
+                req.headers['Cookie']=cookie
                 result = HTTPRedirectHandler.http_error_302(self, req, fp,
                                                             code, msg,
                                                             headers)
                 result.orig_status = code
                 result.orig_headers = headers
+                result.cookie = cookie
                 return result
 
         request = Request(jenkins_url, data)
         opener = build_opener(SmartRedirectHandler())
         res = opener.open(request)
-        self._save_cookie(res.orig_headers)
+        self._save_cookie(res.cookie)
 
-    def _save_cookie(self, headers):
-        current_cookie = headers.get('Set-Cookie')
-        self.cookie = current_cookie.strip('\n\r ')
+    def _save_cookie(self, cookie):
+        self.cookie = cookie
 
     def parse(self, inventory, loader, path, cache=True):
 
