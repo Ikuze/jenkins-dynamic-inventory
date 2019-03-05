@@ -9,7 +9,7 @@
     # The password for this user. Remember that ansible-vault is supported here.
     #   It's not a good idea to put plain text here.
     # If you omit this field, the password will be gotten via prompt
-    jenkins_pass: user
+    jenkins_pass: password/apitoken
     # If you are using a password and NOT an apitoken, you can force the login,
     #  taking the jsessionid cookie, and improving the performance dramatically.
     # Do NOT use this option with an apitoken, or the authentication will fail.
