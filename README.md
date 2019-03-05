@@ -63,7 +63,7 @@ Parameters regarding our jenkins instance.
 ###### plugin (str)
 
 	The name of this plugin: "jenkins".
-    Mandatory.
+	Mandatory.
 
 ###### jenkins_host (str)
 
@@ -71,17 +71,24 @@ Parameters regarding our jenkins instance.
 
 	Example: http://127.0.0.1:8080
     
-    Mandatory.
+	Mandatory.
     
 ###### jenkins_user (str)
 
 	The username that will be used to query the nodes connected to our jenkins.
-    You can omit this user if your computers can be seen by anonymous.
+	You can omit this user if your computers can be seen by anonymous.
 
 ###### jenkins_pass (str)
 	The password for jenkins_user.
-    You can omit this value if you want the password to asked when executing the command.
+	You can use the apitoken too instead of the user password. The performance should be better with the apitoken.
+	You can omit this value if you want the password to be requested via prompt when executing the command.
+	Remember that you can use vault here. Do not use plain text.
     
+###### jenkins_jsessionid (bool)
+	If "True", it will login and save the jsessionid cookie.
+	This option only can be used with the password, do NOT use it with the apitoken.
+	This option should dramatically improve the performance when using the password.
+
 
 ##### Cache
 ---
@@ -135,11 +142,14 @@ This is how a jenkins inventory file using jsoncache plugin would look like:
     #   Omit user and password if computers can be seen by anonymous in your jenkins server.
     jenkins_user: user
     
-    # The password for this user. Remember that ansible-vault is supported here.
+    # The password/apitoken for this user. Remember that ansible-vault is supported here.
     #   It's not a good idea to put plain text here.
     # If you omit this field, the password will be gotten via prompt
     jenkins_pass: secretpassword
 
+    # Do NOT use this option with an apitoken, or the authentication will fail.
+    # Use it if you are using the user's password, since it will improve the performance.
+    jenkins_jsessionid: True
 
     # Cache configuration. 
     # Sample for json file chache plugin configuration, just configure the chache plugin

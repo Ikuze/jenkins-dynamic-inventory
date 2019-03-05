@@ -10,6 +10,10 @@
     #   It's not a good idea to put plain text here.
     # If you omit this field, the password will be gotten via prompt
     jenkins_pass: user
+    # If you are using a password and NOT an apitoken, you can force the login,
+    #  taking the jsessionid cookie, and improving the performance dramatically.
+    # Do NOT use this option with an apitoken, or the authentication will fail.
+    jenkins_jsessionid: False
 
     # Cache configuration. 
     # Sample for json file chache plugin configuration, just configure the chache plugin

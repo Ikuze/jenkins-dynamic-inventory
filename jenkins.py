@@ -21,6 +21,9 @@ DOCUMENTATION = '''
         jenkins_host:
             description: jenkins host
             type: string
+        jenkins_jsessionid:
+            description: force login to use jsessionid and improve performance
+            type: boolean
 '''
 
 EXAMPLES = '''
@@ -30,8 +33,9 @@ simple_config_file:
     compose:
         ansible_connection: ('indows' in launcher_plugin)|ternary('winrm', 'ssh')
         ansible_port: ('indows' in launcher_plugin)|ternary('5986', 'ssh')
-    user: user
-    pass: user
+    jenkins_user: user
+    jenkins_pass: password
+    jenkins_jsessionid: True
     jenkins_host: http://127.0.0.1:8080/
 '''
 
@@ -64,6 +68,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     NAME = 'jenkins'
 
     def _do_login(self):
+        display.vvv('Do login. Using jsessionid cookie.')
         login_url = 'j_acegi_security_check'
         jenkins_url = '{0}/{1}'.format(self._get_jenkins_host(), login_url)
         data = urlencode({'j_username': self._get_jenkins_user(), 'j_password': self._get_jenkins_pass()}).encode("utf-8")
@@ -83,7 +88,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                     if header.lower() == 'set-cookie':
                         cookie = self.extract_cookie(value)
 
-                req.headers['Cookie']=cookie
+                req.headers['Cookie'] = cookie
                 result = HTTPRedirectHandler.http_error_302(self, req, fp,
                                                             code, msg,
                                                             headers)
@@ -274,6 +279,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
                      validate_certs=False,
                      method='GET',
                      timeout=30,
+                     force_basic_auth=(not self._must_login()),
+                     url_username=self._get_jenkins_user(),
+                     url_password=self._get_jenkins_pass(),
                      force=False,
                      headers=self._get_headers())
 
@@ -283,7 +291,10 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         return computer
 
     def _get_headers(self):
-        headers = {'Cookie': self.cookie}
+        if self.cookie is not None:
+            headers = {'Cookie': self.cookie}
+        else:
+            headers = {}
 
         return headers
 
@@ -295,7 +306,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         r = open_url(api_url, use_proxy=False,
                      validate_certs=False,
                      headers=self._get_headers(),
-                     force_basic_auth=True,
+                     force_basic_auth=(not self._must_login()),
+                     url_username=self._get_jenkins_user(),
+                     url_password=self._get_jenkins_pass(),
                      force=True,
                      method='GET')
 
@@ -311,15 +324,16 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def _get_jenkins_pass(self):
         jenkins_pass = self._options.get('jenkins_pass', None)
 
-        if jenkins_pass is None and self._must_login():
+        if jenkins_pass is None and self._get_jenkins_user() is not None:
             jenkins_pass = getpass.getpass()
             # For python 2 and 3 compatibility
             try:
                 u_jenkins_pass = jenkins_pass.decode(sys.stdin.encoding).encode('UTF-8')
-            except TypeError:
+            except (TypeError, AttributeError):
                 u_jenkins_pass = jenkins_pass.encode('UTF-8')
-
-            return u_jenkins_pass
+            # Save the pass not to ask it once and again and again
+            jenkins_pass = u_jenkins_pass.decode('UTF-8')
+            self._options['jenkins_pass'] = jenkins_pass
 
         return jenkins_pass
 
@@ -327,7 +341,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         return self._options.get('jenkins_host', None)
 
     def _must_login(self):
-        return not self._get_jenkins_user() is None
+        return (self._options.get('jenkins_jsessionid', False) and
+                self._get_jenkins_user() is not None)
 
     def verify_file(self, path):
         valid = False
