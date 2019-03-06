@@ -14,6 +14,30 @@ At least, the user needs:
 - Global Read: in order to read 'computer/api/json'
 - Slave Configure: in order to read 'computer/{SLAVENAME}/config.xml'
 
+## Performance
+
+Depending on the authentication method used, this plugin will have a different performance.
+You can:
+- Authenticate using user/password and not use the jsessionid:
+
+  This is, BY FAR, _the slowest method_. Unless you have no other option because of
+  a bug or whatever, do always use the jsessionid (`jenkins_jsessionid=True`) if
+  you use user/password to authenticate.
+
+- Authenticate using user/password and use the jsessionid:
+
+  This is the way I get _the best performance_. You will authenticate once, and use the jsessionid
+  from this moment on and never authenticate again.
+
+- Authenticate using user/apitoken:
+
+  If you cannot use the user/password for any reason, you cannot use the jsessionid (since we get the
+  jsessionid in the login screen, we cannot use the apitoken for that). Anyway, this method will
+  have a performance _between the other two_.
+
+Using the jsessionid you should have no speed problems even with HUGE jenkins servers. Anyway,
+if you find it too slow, remember that you can always use the cache.
+
 ## How to:
 
 ### Enable the plugin.
@@ -88,6 +112,10 @@ Parameters regarding our jenkins instance.
 	If "True", it will login and save the jsessionid cookie.
 	This option only can be used with the password, do NOT use it with the apitoken.
 	This option should dramatically improve the performance when using the password.
+
+###### timeout (int)
+	Maximum time in seconds that it will wait for a single request. Because of ansible's code, the timeout cannot
+	be set to infinite. It must be greater than 0. None value will result in a default 10 seconds timeout.
 
 
 ##### Cache
@@ -174,7 +202,10 @@ This is how a jenkins inventory file using jsoncache plugin would look like:
         - prefix: oss
           key: launcher_plugin.split('@')[0]
      
-
+    # Requests timeout. Maximum time in seconds that we will wait for a request
+    # None = 10 seconds by default because of ansible code.
+    # Cannot configure infinte timeout. Must be > 0
+    timeout: 60
 ```
 You can find a sample [here](https://github.com/Ikuze/jenkins-dynamic-inventory/blob/master/example_inventory.jenkins.yml)
 
@@ -296,4 +327,4 @@ Unittests only work with python 2.
 
 It doesn't seem to be a very interesting plugin, since people usually don't need to run ansible in their jenkins slaves because they use jenkins to do so.
 
-Although it is an interesting way of collecting information or setting up the slaves, I will not invest more time in this plugin. Nevertheless I will try to fix the bugs if I find any of them.
+Although it is an original way of collecting information or setting up the slaves, I will not invest more time in this plugin. Nevertheless I will try to fix the bugs if I find any of them. Please, if you find any bug, don't hesitate to report it.

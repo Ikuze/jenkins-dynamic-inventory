@@ -24,6 +24,9 @@ DOCUMENTATION = '''
         jenkins_jsessionid:
             description: force login to use jsessionid and improve performance
             type: boolean
+        timeout:
+            description: timeout for each request
+            type: int
 '''
 
 EXAMPLES = '''
@@ -37,6 +40,7 @@ simple_config_file:
     jenkins_pass: password
     jenkins_jsessionid: True
     jenkins_host: http://127.0.0.1:8080/
+    timeout: 30
 '''
 
 import sys
@@ -278,7 +282,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         r = open_url(config_url, use_proxy=False,
                      validate_certs=False,
                      method='GET',
-                     timeout=30,
+                     timeout=self._options.get('timeout', None),
                      force_basic_auth=(not self._must_login()),
                      url_username=self._get_jenkins_user(),
                      url_password=self._get_jenkins_pass(),
@@ -306,6 +310,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
         r = open_url(api_url, use_proxy=False,
                      validate_certs=False,
                      headers=self._get_headers(),
+                     timeout=self._options.get('timeout', None),
                      force_basic_auth=(not self._must_login()),
                      url_username=self._get_jenkins_user(),
                      url_password=self._get_jenkins_pass(),

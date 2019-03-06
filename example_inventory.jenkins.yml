@@ -34,4 +34,8 @@
     keyed_groups:
         - prefix: oss
           key: launcher_plugin.split('@')[0]
-     
+
+    # Requests timeout. Maximum time in seconds that we will wait for a request
+    # None = 10 seconds by default because of ansible code.
+    # Cannot configure infinte timeout. Must be > 0
+    timeout: 60
